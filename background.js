@@ -1,22 +1,40 @@
-function saveToClipboard(str) {
-    var textArea = document.createElement("textarea");
+/**
+ * copy text
+ * @param text {string}
+ */
+const copy = text => {
+    const textArea = document.createElement("textarea");
     document.body.appendChild(textArea);
-
-		textArea.value = str;
+    textArea.value = text;
     textArea.select();
     document.execCommand("copy");
-
     document.body.removeChild(textArea);
-}
+};
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-	  chrome.tabs.sendMessage(tab.id, {text : "active content.js"} );
-});
+/**
+ * ping to content script
+ * @param tab
+ */
+const ping = tab => {
+    chrome.tabs.sendMessage(tab.id, {});
+};
 
-chrome.runtime.onMessage.addListener(
-		function(request, sender, sentResponse) {
-			   var answer = "[" + request.text + "]" + "(" + sender.tab.url + ")";
-			   saveToClipboard(answer);
-			   return true;
-		}
-)
+/**
+ * pong from content script
+ * @param request
+ */
+const pong = (request) => {
+    copy(request.list.join("\n"));
+};
+
+/**
+ * start background script
+ */
+const start = () => {
+    chrome.browserAction.onClicked.addListener(ping);
+    chrome.runtime.onMessage.addListener(pong);
+};
+
+// Here We Go!
+start();
+
