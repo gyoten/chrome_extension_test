@@ -17,16 +17,12 @@ class Task {
         if (!textarea) {
             return;
         }
-        const title = textarea.value;
-        const id = textarea.id;
-        if (!title || !id) {
-            return;
-        }
+        const { id, value } = textarea;
         const url = Task.parseUrl(id);
-        if (!url) {
+        if (!value || !url) {
             return;
         }
-        return new Task(title, url);
+        return new Task(value, url);
     }
 
     // Parser

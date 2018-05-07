@@ -24,7 +24,19 @@ const ping = tab => {
  * @param request
  */
 const pong = (request) => {
-    copy(request.list.join("\n"));
+    if(request.list.length > 0) {
+        copy(request.list.join("\n"));
+        notify(request.list);
+    }
+};
+
+const notify = (list) => {
+    chrome.notifications.create('', {
+        'type': 'basic',
+        'title': 'Asana Extension',
+        'message': `Copied ${list.length} tasks!`,
+        'iconUrl' : './for_asana.png'
+    })
 };
 
 /**

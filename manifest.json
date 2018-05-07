@@ -14,7 +14,7 @@
     "default_title": "asana title"
   },
   "permissions": [
-   "activeTab", "clipboardRead"
+   "activeTab", "clipboardRead", "notifications"
   ],
   "manifest_version":2,
   "icons": {
